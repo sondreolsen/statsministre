@@ -384,7 +384,7 @@ body::before {
   }
 
   .map-root {
-    min-height: 520px;
+    min-height: 0;
   }
 
   .map-tools {
