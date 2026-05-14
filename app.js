@@ -171,9 +171,6 @@ function renderDetail() {
   const flagCode = flagCodeByCountry[active.country];
   activeCountryTitle.textContent = active.nameNo;
   detailPanel.innerHTML = `
-    <div class="detail-topline">
-      <span class="detail-flag">${active.flag}</span>
-    </div>
     <div class="detail-capital">Hovedstad: ${active.capital}</div>
     <div class="leader-box">
       <div class="leader-copy">
