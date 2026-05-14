@@ -359,8 +359,18 @@ body::before {
 }
 
 @media (max-width: 1100px) {
+  .map-stage {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .map-root {
+    order: 1;
+  }
+
   .floating-panel {
     position: static;
+    order: 2;
     width: 100%;
     margin-top: 16px;
   }
