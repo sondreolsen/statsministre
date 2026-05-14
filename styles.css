@@ -149,6 +149,11 @@ body::before {
   z-index: 5;
 }
 
+.mobile-detail-card {
+  display: none;
+  margin-top: 16px;
+}
+
 .map-tools {
   display: flex;
   gap: 10px;
@@ -359,20 +364,12 @@ body::before {
 }
 
 @media (max-width: 1100px) {
-  .map-stage {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .map-root {
-    order: 1;
-  }
-
   .floating-panel {
-    position: static;
-    order: 2;
-    width: 100%;
-    margin-top: 16px;
+    display: none;
+  }
+
+  .mobile-detail-card {
+    display: block;
   }
 }
 

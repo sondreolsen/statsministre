@@ -210,6 +210,8 @@ const state = {
 const mapRoot = document.querySelector("#map-root");
 const detailPanel = document.querySelector("#detail-panel");
 const activeCountryTitle = document.querySelector("#active-country-title");
+const mobileDetailPanel = document.querySelector("#mobile-detail-panel");
+const mobileActiveCountryTitle = document.querySelector("#mobile-active-country-title");
 const floatingPanel = document.querySelector(".floating-panel");
 const zoomInButton = document.querySelector("[data-zoom='in']");
 const zoomOutButton = document.querySelector("[data-zoom='out']");
@@ -262,9 +264,10 @@ function showLeaderCard(leader, scrollIntoView = false) {
   renderDetail();
   updateMapHighlights();
 
-  if (scrollIntoView && isMobileViewport() && floatingPanel) {
+  if (scrollIntoView && isMobileViewport()) {
     requestAnimationFrame(() => {
-      floatingPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+      const mobileCard = document.querySelector(".mobile-detail-card");
+      (mobileCard || floatingPanel)?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   }
 }
@@ -273,8 +276,7 @@ function renderDetail() {
   const active = getActiveLeader();
   const flagCode = flagCodeByCountry[active.country];
   const nextElection = nextElectionByCountry[active.country] || "ikke fastsatt";
-  activeCountryTitle.textContent = active.nameNo;
-  detailPanel.innerHTML = `
+  const detailMarkup = `
     <div class="detail-hero">
       <div></div>
       <div class="leader-portrait leader-portrait--hero" data-portrait-slot aria-hidden="true">
@@ -298,7 +300,12 @@ function renderDetail() {
     </div>
     ${active.note ? `<div class="note-box">${active.note}</div>` : ""}
   `;
-  updateLeaderPortrait(active);
+  activeCountryTitle.textContent = active.nameNo;
+  detailPanel.innerHTML = detailMarkup;
+  if (mobileActiveCountryTitle) mobileActiveCountryTitle.textContent = active.nameNo;
+  if (mobileDetailPanel) mobileDetailPanel.innerHTML = detailMarkup;
+  updateLeaderPortrait(active, detailPanel);
+  if (mobileDetailPanel) updateLeaderPortrait(active, mobileDetailPanel);
 }
 
 function getInitials(name) {
@@ -330,8 +337,8 @@ async function fetchLeaderPortrait(leader) {
   }
 }
 
-async function updateLeaderPortrait(leader) {
-  const slot = detailPanel.querySelector("[data-portrait-slot]");
+async function updateLeaderPortrait(leader, root) {
+  const slot = root.querySelector("[data-portrait-slot]");
   if (!slot) return;
 
   const requestId = ++portraitRequestId;
