@@ -1,9 +1,10 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
-import { feature } from "https://cdn.jsdelivr.net/npm/topojson-client@3/+esm";
+import { feature, neighbors } from "https://cdn.jsdelivr.net/npm/topojson-client@3/+esm";
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 const today = new Date("2026-05-14T12:00:00+02:00");
 const checkedDate = "14. mai 2026";
+const countryPalette = ["#f6c87f", "#a8d8b9", "#f2a7c0", "#9fd0e4", "#d6c4f2", "#f3e77c"];
 
 const leaders = [
   { country: "Norway", flag: "🇳🇴", aliases: ["Norway"], capital: "Oslo", coords: [10.7522, 59.9139], capitalCoords: [10.7522, 59.15], labelCoords: [10.8, 64.1], leader: "Jonas Gahr Støre", title: "Statsminister", since: "2021-10-14" },
@@ -253,6 +254,31 @@ let countryLabels = null;
 let zoomBehavior = null;
 let zoomGroup = null;
 let svgElement = null;
+let countryColorByName = new Map();
+
+function buildCountryColorMap(features, allCountries) {
+  const featureIndexes = new Map(features.map((featureItem, index) => [featureItem.properties.name, index]));
+  const fullNeighbors = neighbors(allCountries.map((country) => country.geometry));
+  const europeNeighborIndexes = features.map((featureItem) => {
+    const sourceIndex = allCountries.findIndex((country) => country.properties.name === featureItem.properties.name);
+    return fullNeighbors[sourceIndex]
+      .map((neighborIndex) => allCountries[neighborIndex]?.properties?.name)
+      .filter((name) => featureIndexes.has(name))
+      .map((name) => featureIndexes.get(name));
+  });
+
+  const colors = new Map();
+  features.forEach((featureItem, index) => {
+    const used = new Set(
+      europeNeighborIndexes[index]
+        .map((neighborIndex) => colors.get(features[neighborIndex].properties.name))
+        .filter(Boolean)
+    );
+    const color = countryPalette.find((candidate) => !used.has(candidate)) || countryPalette[index % countryPalette.length];
+    colors.set(featureItem.properties.name, color);
+  });
+  return colors;
+}
 
 function updateMapHighlights() {
   const active = getActiveLeader();
@@ -262,9 +288,9 @@ function updateMapHighlights() {
       .attr("fill", (d) => {
         const leader = byAlias.get(d.properties.name);
         if (!leader) return "#132132";
-        return leader.country === active.country ? "#4ec7ff" : "#314761";
+        return leader.country === active.country ? "#4ec7ff" : countryColorByName.get(d.properties.name) || "#9fd0e4";
       })
-      .attr("stroke", (d) => (byAlias.get(d.properties.name)?.country === active.country ? "#eef7ff" : "#6f87a6"))
+      .attr("stroke", (d) => (byAlias.get(d.properties.name)?.country === active.country ? "#eef7ff" : "#54708e"))
       .attr("stroke-width", (d) => (byAlias.get(d.properties.name)?.country === active.country ? 1.4 : 0.65));
   }
 
@@ -312,6 +338,7 @@ async function drawMap() {
     const world = await d3.json(geoUrl);
     const countries = feature(world, world.objects.countries).features;
     const europeFeatures = countries.filter((country) => byAlias.has(country.properties.name));
+    countryColorByName = buildCountryColorMap(europeFeatures, countries);
 
     const width = 980;
     const height = 760;
@@ -336,7 +363,7 @@ async function drawMap() {
       .append("path")
       .datum({ type: "Sphere" })
       .attr("d", path)
-      .attr("fill", "#0c1d31");
+      .attr("fill", "#bedef0");
 
     const countryLayer = zoomGroup.append("g");
     countryPaths = countryLayer
