@@ -24,8 +24,9 @@
           </p>
         </div>
         <div class="hero-meta">
-          <span>Oppdatert i kode: 14. mai 2026</span>
-          <span>Flaggmarkører over hovedstedene</span>
+          <span id="total-count">46 land og mikrostater</span>
+          <span id="checked-count">Kritiske endringer dobbeltsjekket</span>
+          <span>Manuell kontroll: <strong id="checked-date">14. mai 2026</strong></span>
         </div>
       </header>
 
@@ -36,7 +37,12 @@
               <p class="section-kicker">Kart</p>
               <h2>Hold over et land</h2>
             </div>
-            <p class="section-note">Klikk for å låse valgt land.</p>
+            <p class="section-note">Klikk for å låse valgt land. Dra for å panorere og bruk zoom-knappene ved behov.</p>
+          </div>
+          <div class="map-tools" aria-label="Kartkontroller">
+            <button type="button" data-zoom="out">−</button>
+            <button type="button" data-zoom="in">+</button>
+            <button type="button" data-zoom="reset">Tilbake</button>
           </div>
           <div id="map-root" class="map-root" aria-label="Kart over Europa"></div>
         </section>
@@ -76,7 +82,8 @@
 
           <section class="footnote-card">
             Dette er en hardkodet prototype, ikke en live-database. Politisk ledelse kan
-            endre seg raskt, så listen bør oppdateres ved regjeringsskifter.
+            endre seg raskt, så listen bør oppdateres ved regjeringsskifter. Siste manuelle
+            gjennomgang i denne versjonen: <strong id="source-date">14. mai 2026</strong>.
           </section>
         </aside>
       </main>

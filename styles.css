@@ -175,6 +175,31 @@ body::before {
   height: auto;
 }
 
+.map-tools {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.map-tools button {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  color: white;
+  padding: 10px 14px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.map-tools button:hover,
+.map-tools button:focus-visible {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(119, 211, 255, 0.4);
+  transform: translateY(-1px);
+}
+
 .tooltip {
   position: absolute;
   min-width: 220px;
@@ -218,6 +243,10 @@ body::before {
   align-items: center;
   gap: 10px;
   font-size: 1.25rem;
+}
+
+.detail-flag {
+  font-size: 1.35rem;
 }
 
 .detail-capital {
@@ -366,7 +395,10 @@ body::before {
 }
 
 .flag-label {
-  font-size: 18px;
+  font-size: 19px;
+  paint-order: stroke;
+  stroke: rgba(3, 8, 15, 0.85);
+  stroke-width: 5px;
 }
 
 .capital-label {
@@ -414,5 +446,9 @@ body::before {
 
   .map-root {
     min-height: 520px;
+  }
+
+  .map-tools {
+    flex-wrap: wrap;
   }
 }
