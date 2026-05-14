@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="nb">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Europas Politiske Ledere</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero-card">
+        <div>
+          <p class="eyebrow">Interaktiv oversikt</p>
+          <h1>Europas politiske ledere</h1>
+          <p class="hero-copy">
+            Hold musen over et land eller et flagg for å se hvem som leder landet,
+            hovedstaden og hvor lenge personen har sittet i rollen.
+          </p>
+        </div>
+        <div class="hero-meta">
+          <span>Oppdatert i kode: 14. mai 2026</span>
+          <span>Flaggmarkører over hovedstedene</span>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="map-card">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Kart</p>
+              <h2>Hold over et land</h2>
+            </div>
+            <p class="section-note">Klikk for å låse valgt land.</p>
+          </div>
+          <div id="map-root" class="map-root" aria-label="Kart over Europa"></div>
+        </section>
+
+        <aside class="sidebar">
+          <section class="detail-card">
+            <div class="section-head">
+              <div>
+                <p class="section-kicker">Aktivt land</p>
+                <h2 id="active-country-title">Norge</h2>
+              </div>
+            </div>
+
+            <div id="detail-panel" class="detail-panel"></div>
+          </section>
+
+          <section class="list-card">
+            <div class="section-head">
+              <div>
+                <p class="section-kicker">Oversikt</p>
+                <h2>Land, hovedsteder og ledere</h2>
+              </div>
+            </div>
+
+            <label class="search-field" for="search-input">
+              <span>Søk</span>
+              <input
+                id="search-input"
+                type="search"
+                placeholder="Land, hovedstad eller leder"
+                autocomplete="off"
+              />
+            </label>
+
+            <div id="country-list" class="country-list"></div>
+          </section>
+
+          <section class="footnote-card">
+            Dette er en hardkodet prototype, ikke en live-database. Politisk ledelse kan
+            endre seg raskt, så listen bør oppdateres ved regjeringsskifter.
+          </section>
+        </aside>
+      </main>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
