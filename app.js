@@ -338,17 +338,6 @@ async function drawMap() {
       .attr("d", path)
       .attr("fill", "#0c1d31");
 
-    const backdrop = zoomGroup.append("g");
-    backdrop
-      .selectAll("path")
-      .data(countries)
-      .join("path")
-      .attr("d", path)
-      .attr("fill", "#091220")
-      .attr("stroke", "#2f415a")
-      .attr("stroke-width", 0.35)
-      .attr("opacity", 0.26);
-
     const countryLayer = zoomGroup.append("g");
     countryPaths = countryLayer
       .selectAll("path")
