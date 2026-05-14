@@ -5,6 +5,58 @@ const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 const today = new Date("2026-05-14T12:00:00+02:00");
 const checkedDate = "14. mai 2026";
 const countryPalette = ["#f6c87f", "#a8d8b9", "#f2a7c0", "#9fd0e4", "#d6c4f2", "#f3e77c"];
+const nextElectionByCountry = {
+  Norway: "10. september 2029",
+  Sweden: "13. september 2026",
+  Denmark: "senest 31. oktober 2026",
+  Finland: "april 2027",
+  Iceland: "november 2028",
+  "United Kingdom": "senest juli 2029",
+  Ireland: "november 2029",
+  France: "april 2027 (presidentvalg)",
+  Germany: "februar 2029",
+  Netherlands: "oktober 2029",
+  Belgium: "juni 2029",
+  Luxembourg: "oktober 2028",
+  Austria: "september 2029",
+  Switzerland: "ikke direkte valg til statsoverhodet; forbundspresident velges av Forbundsforsamlingen",
+  Spain: "juli 2027",
+  Portugal: "mai 2029",
+  Italy: "september 2027",
+  Malta: "mars 2027",
+  Greece: "juni 2027",
+  Cyprus: "februar 2028 (presidentvalg)",
+  Poland: "oktober 2027",
+  Czechia: "oktober 2029",
+  Slovakia: "september 2027",
+  Hungary: "april 2030 (forventet)",
+  Slovenia: "22. mars 2026",
+  Croatia: "april 2028",
+  "Bosnia and Herzegovina": "oktober 2026",
+  Serbia: "desember 2027",
+  Montenegro: "juni 2027",
+  Kosovo: "desember 2029",
+  Albania: "mai 2029",
+  "North Macedonia": "mai 2029",
+  Bulgaria: "våren 2030 (forventet)",
+  Romania: "mai 2030 (presidentvalg)",
+  Moldova: "september 2029",
+  Ukraine: "utsatt på ubestemt tid under krigstilstand",
+  Belarus: "januar 2030 (presidentvalg)",
+  Lithuania: "mai 2029 (presidentvalg)",
+  Latvia: "3. oktober 2026",
+  Estonia: "mars 2027",
+  Russia: "mars 2030 (presidentvalg)",
+  Turkey: "mai 2028 (president- og parlamentsvalg)",
+  Georgia: "oktober 2028",
+  Armenia: "juni 2026",
+  Azerbaijan: "februar 2031 (presidentvalg)",
+  Andorra: "april 2027",
+  Monaco: "ingen direkte valg til regjeringssjefen; ministeren utnevnes av fyrsten",
+  Liechtenstein: "februar 2029",
+  "San Marino": "ikke direkte valg; kapteinsregentene velges av parlamentet hver 6. måned",
+  "Vatican City": "ikke offentlig valg; pave velges av konklavet når embetet blir ledig"
+};
 const crimeaFeature = {
   type: "Feature",
   properties: { name: "Crimea", parent: "Ukraine" },
@@ -202,6 +254,7 @@ function getActiveLeader() {
 function renderDetail() {
   const active = getActiveLeader();
   const flagCode = flagCodeByCountry[active.country];
+  const nextElection = nextElectionByCountry[active.country] || "ikke fastsatt";
   activeCountryTitle.textContent = active.nameNo;
   detailPanel.innerHTML = `
     <div class="detail-hero">
@@ -222,7 +275,8 @@ function renderDetail() {
     </div>
     <div class="tenure-box">
       Har sittet siden <strong>${formatDate(active.since)}</strong><br />
-      Omtrent <strong>${yearsAndMonths(active.since)}</strong>
+      Omtrent <strong>${yearsAndMonths(active.since)}</strong><br />
+      Neste valg: <strong>${nextElection}</strong>
     </div>
     ${active.note ? `<div class="note-box">${active.note}</div>` : ""}
   `;
