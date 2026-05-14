@@ -304,8 +304,7 @@ function renderDetail() {
   detailPanel.innerHTML = detailMarkup;
   if (mobileActiveCountryTitle) mobileActiveCountryTitle.textContent = active.nameNo;
   if (mobileDetailPanel) mobileDetailPanel.innerHTML = detailMarkup;
-  updateLeaderPortrait(active, detailPanel);
-  if (mobileDetailPanel) updateLeaderPortrait(active, mobileDetailPanel);
+  updateLeaderPortrait(active, [detailPanel, mobileDetailPanel].filter(Boolean));
 }
 
 function getInitials(name) {
@@ -337,19 +336,21 @@ async function fetchLeaderPortrait(leader) {
   }
 }
 
-async function updateLeaderPortrait(leader, root) {
-  const slot = root.querySelector("[data-portrait-slot]");
-  if (!slot) return;
-
+async function updateLeaderPortrait(leader, roots) {
   const requestId = ++portraitRequestId;
   const imageUrl = await fetchLeaderPortrait(leader);
   if (requestId !== portraitRequestId) return;
 
-  if (imageUrl) {
-    slot.innerHTML = `<img src="${imageUrl}" alt="Portrett av ${leader.leader}" loading="lazy" referrerpolicy="no-referrer" />`;
-  } else {
-    slot.innerHTML = `<span>${getInitials(leader.leader)}</span>`;
-  }
+  roots.forEach((root) => {
+    const slot = root?.querySelector("[data-portrait-slot]");
+    if (!slot) return;
+
+    if (imageUrl) {
+      slot.innerHTML = `<img src="${imageUrl}" alt="Portrett av ${leader.leader}" loading="lazy" referrerpolicy="no-referrer" />`;
+    } else {
+      slot.innerHTML = `<span>${getInitials(leader.leader)}</span>`;
+    }
+  });
 }
 
 let countryPaths = null;
