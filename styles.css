@@ -350,12 +350,12 @@ body::before {
 }
 
 .country-label {
-  font-size: 10.5px;
+  font-size: 16px;
   fill: rgba(12, 20, 32, 0.86);
   letter-spacing: 0.02em;
   paint-order: stroke;
   stroke: rgba(245, 250, 255, 0.9);
-  stroke-width: 5px;
+  stroke-width: 6px;
 }
 
 @media (max-width: 1100px) {
@@ -405,5 +405,10 @@ body::before {
   .leader-portrait--hero {
     width: 120px;
     height: 120px;
+  }
+
+  .country-label {
+    font-size: 21px;
+    stroke-width: 7px;
   }
 }
