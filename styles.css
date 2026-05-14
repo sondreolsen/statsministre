@@ -329,15 +329,6 @@ body::before {
   color: #fff0c9;
 }
 
-.footnote-card {
-  margin-top: 22px;
-  padding: 16px 18px;
-  border-radius: 22px;
-  background: rgba(245, 170, 50, 0.08);
-  color: #ffe6b5;
-  line-height: 1.5;
-}
-
 .empty-state {
   padding: 18px;
   border-radius: 18px;
