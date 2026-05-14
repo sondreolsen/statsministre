@@ -5,6 +5,37 @@ const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 const today = new Date("2026-05-14T12:00:00+02:00");
 const checkedDate = "14. mai 2026";
 const countryPalette = ["#f6c87f", "#a8d8b9", "#f2a7c0", "#9fd0e4", "#d6c4f2", "#f3e77c"];
+const crimeaFeature = {
+  type: "Feature",
+  properties: { name: "Crimea", parent: "Ukraine" },
+  geometry: {
+    type: "Polygon",
+    coordinates: [[
+      [32.18, 46.05],
+      [32.58, 46.16],
+      [33.02, 46.30],
+      [33.48, 46.40],
+      [34.08, 46.28],
+      [34.55, 46.18],
+      [35.18, 45.98],
+      [35.82, 45.66],
+      [36.22, 45.40],
+      [36.36, 45.08],
+      [36.18, 44.90],
+      [35.62, 44.82],
+      [35.06, 44.80],
+      [34.62, 44.62],
+      [34.18, 44.54],
+      [33.72, 44.46],
+      [33.18, 44.42],
+      [32.72, 44.56],
+      [32.44, 44.82],
+      [32.28, 45.18],
+      [32.18, 45.62],
+      [32.18, 46.05]
+    ]]
+  }
+};
 const flagCodeByCountry = {
   Norway: "no",
   Sweden: "se",
@@ -243,6 +274,7 @@ async function updateLeaderPortrait(leader) {
 }
 
 let countryPaths = null;
+let crimeaPath = null;
 let countryLabels = null;
 let zoomBehavior = null;
 let zoomGroup = null;
@@ -295,6 +327,14 @@ function updateMapHighlights() {
       .attr("font-size", (d) => (d.country === active.country ? 12 : 10.5))
       .attr("font-weight", (d) => (d.country === active.country ? 800 : 700))
       .attr("opacity", (d) => (d.country === active.country ? 1 : 0.82));
+  }
+
+  if (crimeaPath) {
+    const isActive = active.country === "Ukraine";
+    crimeaPath
+      .attr("fill", isActive ? "#4ec7ff" : countryColorByName.get("Ukraine") || "#9fd0e4")
+      .attr("stroke", isActive ? "#f8fcff" : "#5f7695")
+      .attr("stroke-width", isActive ? 1.6 : 0.8);
   }
 }
 
@@ -352,6 +392,32 @@ async function drawMap() {
         const leader = byAlias.get(datum.properties.name);
         if (!leader) return;
         state.selected = leader;
+        renderDetail();
+        updateMapHighlights();
+      });
+
+    const ukraineLeader = leaders.find((leader) => leader.country === "Ukraine");
+    crimeaPath = zoomGroup
+      .append("g")
+      .append("path")
+      .datum(crimeaFeature)
+      .attr("class", "map-country map-country--crimea")
+      .attr("d", path)
+      .style("cursor", "pointer")
+      .on("mouseenter", () => {
+        if (!ukraineLeader) return;
+        state.hovered = ukraineLeader;
+        renderDetail();
+        updateMapHighlights();
+      })
+      .on("mouseleave", () => {
+        state.hovered = null;
+        renderDetail();
+        updateMapHighlights();
+      })
+      .on("click", () => {
+        if (!ukraineLeader) return;
+        state.selected = ukraineLeader;
         renderDetail();
         updateMapHighlights();
       });
