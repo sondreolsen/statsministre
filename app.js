@@ -256,13 +256,15 @@ let zoomGroup = null;
 let svgElement = null;
 let countryColorByName = new Map();
 
-function buildCountryColorMap(features, allCountries) {
+function buildCountryColorMap(features, topologyGeometries) {
   const featureIndexes = new Map(features.map((featureItem, index) => [featureItem.properties.name, index]));
-  const fullNeighbors = neighbors(allCountries.map((country) => country.geometry));
+  const geometryNameByIndex = topologyGeometries.map((geometry) => geometry.properties?.name);
+  const fullNeighbors = neighbors(topologyGeometries);
   const europeNeighborIndexes = features.map((featureItem) => {
-    const sourceIndex = allCountries.findIndex((country) => country.properties.name === featureItem.properties.name);
+    const sourceIndex = geometryNameByIndex.findIndex((name) => name === featureItem.properties.name);
+    if (sourceIndex === -1) return [];
     return fullNeighbors[sourceIndex]
-      .map((neighborIndex) => allCountries[neighborIndex]?.properties?.name)
+      .map((neighborIndex) => geometryNameByIndex[neighborIndex])
       .filter((name) => featureIndexes.has(name))
       .map((name) => featureIndexes.get(name));
   });
@@ -338,7 +340,7 @@ async function drawMap() {
     const world = await d3.json(geoUrl);
     const countries = feature(world, world.objects.countries).features;
     const europeFeatures = countries.filter((country) => byAlias.has(country.properties.name));
-    countryColorByName = buildCountryColorMap(europeFeatures, countries);
+    countryColorByName = buildCountryColorMap(europeFeatures, world.objects.countries.geometries);
 
     const width = 980;
     const height = 760;
