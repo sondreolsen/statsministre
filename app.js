@@ -83,10 +83,6 @@ const checkedCount = document.querySelector("#checked-count");
 const checkedDateLabel = document.querySelector("#checked-date");
 const sourceDateLabel = document.querySelector("#source-date");
 
-const tooltip = document.createElement("div");
-tooltip.className = "tooltip";
-mapRoot.appendChild(tooltip);
-
 if (totalCount) totalCount.textContent = `${leaders.length} land og mikrostater`;
 if (checkedCount) checkedCount.textContent = "Kritiske endringer dobbeltsjekket";
 if (checkedDateLabel) checkedDateLabel.textContent = checkedDate;
@@ -137,32 +133,6 @@ function renderDetail() {
     </div>
     ${active.note ? `<div class="note-box">${active.note}</div>` : ""}
   `;
-}
-
-function clampTooltipPosition(x, y) {
-  const width = tooltip.offsetWidth || 240;
-  const height = tooltip.offsetHeight || 120;
-  const bounds = mapRoot.getBoundingClientRect();
-  const left = Math.max(12, Math.min(x + 18, bounds.width - width - 12));
-  const top = Math.max(12, Math.min(y + 18, bounds.height - height - 12));
-  return { left, top };
-}
-
-function showTooltip(leader, x, y) {
-  tooltip.innerHTML = `
-    <div class="tooltip-country">${leader.country}</div>
-    <div class="tooltip-line">${leader.capital}</div>
-    <div class="tooltip-line">${leader.leader}</div>
-    <div class="tooltip-line">Sittetid: ${yearsAndMonths(leader.since)}</div>
-  `;
-  tooltip.classList.add("visible");
-  const pos = clampTooltipPosition(x, y);
-  tooltip.style.left = `${pos.left}px`;
-  tooltip.style.top = `${pos.top}px`;
-}
-
-function hideTooltip() {
-  tooltip.classList.remove("visible");
 }
 
 let countryPaths = null;
@@ -260,22 +230,17 @@ async function drawMap() {
       .attr("d", path)
       .style("cursor", (d) => (byAlias.get(d.properties.name) ? "pointer" : "default"))
       .on("mouseenter", (event, datum) => {
+      .on("mouseenter", (_, datum) => {
         const leader = byAlias.get(datum.properties.name);
         if (!leader) return;
         state.hovered = leader;
         renderDetail();
         updateMapHighlights();
-        showTooltip(leader, event.offsetX, event.offsetY);
-      })
-      .on("mousemove", (event, datum) => {
-        const leader = byAlias.get(datum.properties.name);
-        if (leader) showTooltip(leader, event.offsetX, event.offsetY);
       })
       .on("mouseleave", () => {
         state.hovered = null;
         renderDetail();
         updateMapHighlights();
-        hideTooltip();
       })
       .on("click", (_, datum) => {
         const leader = byAlias.get(datum.properties.name);
