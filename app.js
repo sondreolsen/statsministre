@@ -230,10 +230,10 @@ async function drawMap() {
 
     const width = 1380;
     const height = 840;
-    const projection = d3.geoMercator().fitExtent(
-      [[40, 30], [width - 40, height - 30]],
-      { type: "FeatureCollection", features: europeFeatures }
-    );
+    const projection = d3.geoMercator()
+      .center([18, 54])
+      .translate([width / 2, height / 2])
+      .scale(780);
     const path = d3.geoPath(projection);
 
     svgElement = d3
