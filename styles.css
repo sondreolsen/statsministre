@@ -409,7 +409,8 @@ body::before {
   }
 
   .mobile-detail-card .section-head {
-    margin-bottom: 10px;
+    margin-bottom: 0;
+    align-items: flex-start;
   }
 
   .mobile-detail-card #mobile-active-country-title {
@@ -423,7 +424,8 @@ body::before {
 
   .mobile-detail-card .detail-hero {
     justify-content: flex-end;
-    margin-bottom: 0;
+    margin-top: -54px;
+    margin-bottom: -6px;
   }
 
   .mobile-detail-card .leader-portrait--hero {
