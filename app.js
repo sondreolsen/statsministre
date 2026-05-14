@@ -210,6 +210,7 @@ const state = {
 const mapRoot = document.querySelector("#map-root");
 const detailPanel = document.querySelector("#detail-panel");
 const activeCountryTitle = document.querySelector("#active-country-title");
+const floatingPanel = document.querySelector(".floating-panel");
 const zoomInButton = document.querySelector("[data-zoom='in']");
 const zoomOutButton = document.querySelector("[data-zoom='out']");
 const zoomResetButton = document.querySelector("[data-zoom='reset']");
@@ -249,6 +250,23 @@ function formatDate(value) {
 
 function getActiveLeader() {
   return state.hovered || state.selected;
+}
+
+function isMobileViewport() {
+  return window.matchMedia("(max-width: 1100px)").matches;
+}
+
+function showLeaderCard(leader, scrollIntoView = false) {
+  state.selected = leader;
+  state.hovered = null;
+  renderDetail();
+  updateMapHighlights();
+
+  if (scrollIntoView && isMobileViewport() && floatingPanel) {
+    requestAnimationFrame(() => {
+      floatingPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
 }
 
 function renderDetail() {
@@ -445,9 +463,13 @@ async function drawMap() {
       .on("click", (_, datum) => {
         const leader = byAlias.get(datum.properties.name);
         if (!leader) return;
-        state.selected = leader;
-        renderDetail();
-        updateMapHighlights();
+        showLeaderCard(leader, true);
+      })
+      .on("touchend", (event, datum) => {
+        const leader = byAlias.get(datum.properties.name);
+        if (!leader) return;
+        event.preventDefault();
+        showLeaderCard(leader, true);
       });
 
     const ukraineLeader = leaders.find((leader) => leader.country === "Ukraine");
@@ -471,9 +493,12 @@ async function drawMap() {
       })
       .on("click", () => {
         if (!ukraineLeader) return;
-        state.selected = ukraineLeader;
-        renderDetail();
-        updateMapHighlights();
+        showLeaderCard(ukraineLeader, true);
+      })
+      .on("touchend", (event) => {
+        if (!ukraineLeader) return;
+        event.preventDefault();
+        showLeaderCard(ukraineLeader, true);
       });
 
     countryLabels = zoomGroup
