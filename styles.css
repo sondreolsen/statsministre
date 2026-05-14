@@ -118,10 +118,7 @@ body::before {
 
 .layout {
   margin-top: 22px;
-  display: grid;
-  grid-template-columns: minmax(0, 1.65fr) minmax(330px, 0.95fr);
-  gap: 22px;
-  align-items: start;
+  display: block;
 }
 
 .map-card,
@@ -140,11 +137,6 @@ body::before {
   padding: 18px;
 }
 
-.sidebar {
-  display: grid;
-  gap: 18px;
-}
-
 .section-head {
   display: flex;
   justify-content: space-between;
@@ -159,9 +151,13 @@ body::before {
   font-size: 0.9rem;
 }
 
+.map-stage {
+  position: relative;
+}
+
 .map-root {
   position: relative;
-  min-height: 720px;
+  min-height: 840px;
   border-radius: 24px;
   overflow: hidden;
   background:
@@ -173,6 +169,14 @@ body::before {
   display: block;
   width: 100%;
   height: auto;
+}
+
+.floating-panel {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: min(360px, calc(100% - 36px));
+  z-index: 5;
 }
 
 .map-tools {
@@ -295,81 +299,8 @@ body::before {
   color: #fff0c9;
 }
 
-.search-field {
-  display: grid;
-  gap: 8px;
-  margin-bottom: 14px;
-  color: var(--muted);
-  font-size: 0.92rem;
-}
-
-.search-field input {
-  width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 18px;
-  padding: 14px 16px;
-  background: rgba(255, 255, 255, 0.06);
-  color: white;
-  font: inherit;
-  outline: none;
-}
-
-.search-field input:focus {
-  border-color: rgba(119, 211, 255, 0.7);
-  box-shadow: 0 0 0 4px rgba(119, 211, 255, 0.14);
-}
-
-.country-list {
-  display: grid;
-  gap: 10px;
-  max-height: 600px;
-  overflow: auto;
-  padding-right: 4px;
-}
-
-.country-item {
-  width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 14px 14px 15px;
-  background: rgba(255, 255, 255, 0.06);
-  color: white;
-  text-align: left;
-  cursor: pointer;
-  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
-}
-
-.country-item:hover,
-.country-item:focus-visible {
-  transform: translateY(-1px);
-  border-color: rgba(119, 211, 255, 0.4);
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.country-item.active {
-  background: linear-gradient(135deg, rgba(27, 140, 194, 0.9), rgba(18, 80, 126, 0.9));
-  border-color: rgba(146, 229, 255, 0.55);
-}
-
-.country-item-top {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  align-items: center;
-}
-
-.country-item-country {
-  font-weight: 700;
-}
-
-.country-item-capital,
-.country-item-meta {
-  color: #d5e4f5;
-  margin-top: 4px;
-  font-size: 0.92rem;
-}
-
 .footnote-card {
+  margin-top: 22px;
   padding: 16px 18px;
   border-radius: 22px;
   background: rgba(245, 170, 50, 0.08);
@@ -388,44 +319,25 @@ body::before {
   transition: fill 160ms ease, stroke 160ms ease;
 }
 
-.capital-label,
 .country-label,
 .flag-label {
   user-select: none;
 }
 
-.flag-label {
-  font-size: 19px;
+.country-label {
+  font-size: 10.5px;
+  fill: rgba(12, 20, 32, 0.86);
+  letter-spacing: 0.02em;
   paint-order: stroke;
-  stroke: rgba(3, 8, 15, 0.85);
+  stroke: rgba(245, 250, 255, 0.9);
   stroke-width: 5px;
 }
 
-.capital-label {
-  font-size: 11px;
-  font-weight: 700;
-  fill: #f8fbff;
-  paint-order: stroke;
-  stroke: rgba(4, 10, 20, 0.95);
-  stroke-width: 3px;
-}
-
-.country-label {
-  font-size: 10px;
-  fill: rgba(241, 247, 255, 0.72);
-  letter-spacing: 0.02em;
-  paint-order: stroke;
-  stroke: rgba(6, 12, 21, 0.72);
-  stroke-width: 4px;
-}
-
 @media (max-width: 1100px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar {
-    grid-template-columns: 1fr;
+  .floating-panel {
+    position: static;
+    width: 100%;
+    margin-top: 16px;
   }
 }
 
@@ -450,5 +362,9 @@ body::before {
 
   .map-tools {
     flex-wrap: wrap;
+  }
+
+  .floating-panel {
+    width: 100%;
   }
 }

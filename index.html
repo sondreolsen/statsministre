@@ -44,49 +44,28 @@
             <button type="button" data-zoom="in">+</button>
             <button type="button" data-zoom="reset">Tilbake</button>
           </div>
-          <div id="map-root" class="map-root" aria-label="Kart over Europa"></div>
+          <div class="map-stage">
+            <div id="map-root" class="map-root" aria-label="Kart over Europa"></div>
+            <aside class="floating-panel">
+              <section class="detail-card">
+                <div class="section-head">
+                  <div>
+                    <p class="section-kicker">Aktivt land</p>
+                    <h2 id="active-country-title">Norge</h2>
+                  </div>
+                </div>
+                <div id="detail-panel" class="detail-panel"></div>
+              </section>
+            </aside>
+          </div>
         </section>
-
-        <aside class="sidebar">
-          <section class="detail-card">
-            <div class="section-head">
-              <div>
-                <p class="section-kicker">Aktivt land</p>
-                <h2 id="active-country-title">Norge</h2>
-              </div>
-            </div>
-
-            <div id="detail-panel" class="detail-panel"></div>
-          </section>
-
-          <section class="list-card">
-            <div class="section-head">
-              <div>
-                <p class="section-kicker">Oversikt</p>
-                <h2>Land, hovedsteder og ledere</h2>
-              </div>
-            </div>
-
-            <label class="search-field" for="search-input">
-              <span>Søk</span>
-              <input
-                id="search-input"
-                type="search"
-                placeholder="Land, hovedstad eller leder"
-                autocomplete="off"
-              />
-            </label>
-
-            <div id="country-list" class="country-list"></div>
-          </section>
-
-          <section class="footnote-card">
-            Dette er en hardkodet prototype, ikke en live-database. Politisk ledelse kan
-            endre seg raskt, så listen bør oppdateres ved regjeringsskifter. Siste manuelle
-            gjennomgang i denne versjonen: <strong id="source-date">14. mai 2026</strong>.
-          </section>
-        </aside>
       </main>
+
+      <section class="footnote-card">
+        Dette er en hardkodet prototype, ikke en live-database. Politisk ledelse kan
+        endre seg raskt, så listen bør oppdateres ved regjeringsskifter. Siste manuelle
+        gjennomgang i denne versjonen: <strong id="source-date">14. mai 2026</strong>.
+      </section>
     </div>
 
     <script type="module" src="./app.js"></script>
