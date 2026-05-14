@@ -8,7 +8,7 @@ const countryPalette = ["#f6c87f", "#a8d8b9", "#f2a7c0", "#9fd0e4", "#d6c4f2", "
 const nextElectionByCountry = {
   Norway: "10. september 2029",
   Sweden: "13. september 2026",
-  Denmark: "senest 31. oktober 2026",
+  Denmark: "senest 23. mars 2030",
   Finland: "april 2027",
   Iceland: "november 2028",
   "United Kingdom": "senest juli 2029",
