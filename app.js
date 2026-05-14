@@ -5,6 +5,58 @@ const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 const today = new Date("2026-05-14T12:00:00+02:00");
 const checkedDate = "14. mai 2026";
 const countryPalette = ["#f6c87f", "#a8d8b9", "#f2a7c0", "#9fd0e4", "#d6c4f2", "#f3e77c"];
+const flagCodeByCountry = {
+  Norway: "no",
+  Sweden: "se",
+  Denmark: "dk",
+  Finland: "fi",
+  Iceland: "is",
+  "United Kingdom": "gb",
+  Ireland: "ie",
+  France: "fr",
+  Germany: "de",
+  Netherlands: "nl",
+  Belgium: "be",
+  Luxembourg: "lu",
+  Austria: "at",
+  Switzerland: "ch",
+  Spain: "es",
+  Portugal: "pt",
+  Italy: "it",
+  Malta: "mt",
+  Greece: "gr",
+  Cyprus: "cy",
+  Poland: "pl",
+  Czechia: "cz",
+  Slovakia: "sk",
+  Hungary: "hu",
+  Slovenia: "si",
+  Croatia: "hr",
+  "Bosnia and Herzegovina": "ba",
+  Serbia: "rs",
+  Montenegro: "me",
+  Kosovo: "xk",
+  Albania: "al",
+  "North Macedonia": "mk",
+  Bulgaria: "bg",
+  Romania: "ro",
+  Moldova: "md",
+  Ukraine: "ua",
+  Belarus: "by",
+  Lithuania: "lt",
+  Latvia: "lv",
+  Estonia: "ee",
+  Russia: "ru",
+  Turkey: "tr",
+  Georgia: "ge",
+  Armenia: "am",
+  Azerbaijan: "az",
+  Andorra: "ad",
+  Monaco: "mc",
+  Liechtenstein: "li",
+  "San Marino": "sm",
+  "Vatican City": "va"
+};
 
 const leaders = [
   { country: "Norway", nameNo: "Norge", flag: "🇳🇴", aliases: ["Norway"], capital: "Oslo", labelCoords: [10.8, 64.1], leader: "Jonas Gahr Støre", title: "Statsminister", since: "2021-10-14" },
@@ -82,8 +134,6 @@ const totalCount = document.querySelector("#total-count");
 const checkedCount = document.querySelector("#checked-count");
 const checkedDateLabel = document.querySelector("#checked-date");
 const sourceDateLabel = document.querySelector("#source-date");
-const portraitCache = new Map();
-let portraitRequestId = 0;
 
 if (totalCount) totalCount.textContent = `${leaders.length} land og mikrostater`;
 if (checkedCount) checkedCount.textContent = "Kritiske endringer dobbeltsjekket";
@@ -118,21 +168,20 @@ function getActiveLeader() {
 
 function renderDetail() {
   const active = getActiveLeader();
+  const flagCode = flagCodeByCountry[active.country];
   activeCountryTitle.textContent = active.nameNo;
   detailPanel.innerHTML = `
-    <div class="detail-hero">
-      <div class="detail-topline">
-        <span class="detail-flag">${active.flag}</span>
-      </div>
-      <div class="leader-portrait leader-portrait--hero" data-portrait-slot aria-hidden="true">
-        <span>${getInitials(active.leader)}</span>
-      </div>
+    <div class="detail-topline">
+      <span class="detail-flag">${active.flag}</span>
     </div>
     <div class="detail-capital">Hovedstad: ${active.capital}</div>
     <div class="leader-box">
       <div class="leader-copy">
         <p class="leader-title">${active.title}</p>
-        <p class="leader-name">${active.leader}</p>
+        <div class="leader-name-row">
+          ${flagCode ? `<img class="leader-flag" src="https://flagcdn.com/w80/${flagCode}.png" alt="Flagget til ${active.nameNo}" loading="lazy" />` : ""}
+          <p class="leader-name">${active.leader}</p>
+        </div>
       </div>
     </div>
     <div class="tenure-box">
@@ -141,51 +190,6 @@ function renderDetail() {
     </div>
     ${active.note ? `<div class="note-box">${active.note}</div>` : ""}
   `;
-  updateLeaderPortrait(active);
-}
-
-function getInitials(name) {
-  const parts = name.split(/[\s-]+/).filter(Boolean);
-  return parts.slice(0, 2).map((part) => part[0]).join("").toUpperCase();
-}
-
-function getPortraitQuery(leader) {
-  if (leader.country === "Vatican City") return "Pope Leo XIV";
-  if (leader.country === "San Marino") return null;
-  return leader.leader;
-}
-
-async function fetchLeaderPortrait(leader) {
-  const query = getPortraitQuery(leader);
-  if (!query) return null;
-  if (portraitCache.has(query)) return portraitCache.get(query);
-
-  try {
-    const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`);
-    if (!response.ok) throw new Error("portrait fetch failed");
-    const data = await response.json();
-    const imageUrl = data.thumbnail?.source || data.originalimage?.source || null;
-    portraitCache.set(query, imageUrl);
-    return imageUrl;
-  } catch (error) {
-    portraitCache.set(query, null);
-    return null;
-  }
-}
-
-async function updateLeaderPortrait(leader) {
-  const slot = detailPanel.querySelector("[data-portrait-slot]");
-  if (!slot) return;
-
-  const requestId = ++portraitRequestId;
-  const imageUrl = await fetchLeaderPortrait(leader);
-  if (requestId !== portraitRequestId) return;
-
-  if (imageUrl) {
-    slot.innerHTML = `<img src="${imageUrl}" alt="Portrett av ${leader.leader}" loading="lazy" referrerpolicy="no-referrer" />`;
-  } else {
-    slot.innerHTML = `<span>${getInitials(leader.leader)}</span>`;
-  }
 }
 
 let countryPaths = null;
