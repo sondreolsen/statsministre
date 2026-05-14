@@ -379,6 +379,16 @@ body::before {
     padding-top: 16px;
   }
 
+  .section-head {
+    align-items: start;
+  }
+
+  .map-title {
+    font-size: 2rem;
+    line-height: 1.02;
+    max-width: 9ch;
+  }
+
   .map-card {
     padding: 14px;
   }
@@ -395,13 +405,74 @@ body::before {
     width: 100%;
   }
 
-  .leader-name-row {
-    align-items: flex-start;
+  .mobile-detail-card {
+    margin-top: 10px;
+    padding: 14px;
   }
 
-  .leader-portrait--hero {
-    width: 120px;
-    height: 120px;
+  .mobile-detail-card .section-head {
+    margin-bottom: 10px;
+  }
+
+  .mobile-detail-card #mobile-active-country-title {
+    font-size: 2rem;
+    line-height: 1.05;
+  }
+
+  .mobile-detail-card .detail-panel {
+    gap: 10px;
+  }
+
+  .mobile-detail-card .detail-hero {
+    justify-content: flex-end;
+    margin-bottom: 0;
+  }
+
+  .mobile-detail-card .leader-portrait--hero {
+    width: 92px;
+    height: 92px;
+    border-radius: 20px;
+  }
+
+  .mobile-detail-card .detail-capital {
+    margin-top: -102px;
+    max-width: calc(100% - 112px);
+    min-height: 92px;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .mobile-detail-card .leader-box {
+    margin-top: -2px;
+    padding: 14px;
+  }
+
+  .mobile-detail-card .leader-title {
+    font-size: 0.82rem;
+  }
+
+  .mobile-detail-card .leader-name {
+    font-size: 1.05rem;
+    line-height: 1.12;
+  }
+
+  .mobile-detail-card .leader-name-row {
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .mobile-detail-card .leader-flag {
+    width: 34px;
+    height: 24px;
+  }
+
+  .mobile-detail-card .tenure-box,
+  .mobile-detail-card .note-box {
+    padding: 12px 14px;
+  }
+
+  .leader-name-row {
+    align-items: flex-start;
   }
 
   .country-label {

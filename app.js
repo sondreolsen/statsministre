@@ -277,7 +277,7 @@ function renderDetail() {
   const flagCode = flagCodeByCountry[active.country];
   const nextElection = nextElectionByCountry[active.country] || "ikke fastsatt";
   const detailMarkup = `
-    <div class="detail-hero">
+    <div class="detail-hero${mobileDetailPanel ? " detail-hero--mobile-ready" : ""}">
       <div></div>
       <div class="leader-portrait leader-portrait--hero" data-portrait-slot aria-hidden="true">
         <span>${getInitials(active.leader)}</span>
