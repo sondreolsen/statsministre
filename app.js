@@ -120,17 +120,19 @@ function renderDetail() {
   const active = getActiveLeader();
   activeCountryTitle.textContent = active.nameNo;
   detailPanel.innerHTML = `
-    <div class="detail-topline">
-      <span class="detail-flag">${active.flag}</span>
+    <div class="detail-hero">
+      <div class="detail-topline">
+        <span class="detail-flag">${active.flag}</span>
+      </div>
+      <div class="leader-portrait leader-portrait--hero" data-portrait-slot aria-hidden="true">
+        <span>${getInitials(active.leader)}</span>
+      </div>
     </div>
     <div class="detail-capital">Hovedstad: ${active.capital}</div>
-    <div class="leader-box leader-box--with-photo">
+    <div class="leader-box">
       <div class="leader-copy">
         <p class="leader-title">${active.title}</p>
         <p class="leader-name">${active.leader}</p>
-      </div>
-      <div class="leader-portrait" data-portrait-slot aria-hidden="true">
-        <span>${getInitials(active.leader)}</span>
       </div>
     </div>
     <div class="tenure-box">
